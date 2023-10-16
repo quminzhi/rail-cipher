@@ -1,11 +1,27 @@
 package rail
 
-// Encode -
-//
-//	  s - income string
-//	  n - how many rails we will use
-//	OUT: ciphered string
-func Encode(s string, n int) string {
+// Encode encrypts plaintext with given plaintext, k which is a tuple (d, r)
+// where d is the depth of the cipher and r is the number of times the algorithm should repeat itself
+func Encode(s string, k []int) string {
+	if len(k) != 2 {
+		return ""
+	}
+	d := k[0]
+	r := k[1]
+
+	var ct string
+	for i := 0; i < r; i++ {
+		ct = EncodeOnce(s, d)
+		s = ct
+	}
+
+	return ct
+}
+
+// EncodeOnce encrypts plaintext with given s and k and returns ciphertext
+// @s: income string
+// @n: how many rails we will use
+func EncodeOnce(s string, n int) string {
 	ss := []rune(s)
 
 	l := len(ss)
@@ -19,12 +35,28 @@ func Encode(s string, n int) string {
 	return string(r)
 }
 
-// Decode -
-//
-//	  s - ciphered string
-//	  n - how many rails we will use
-//	OUT: decoded string
-func Decode(s string, n int) string {
+// Decode decrypts ciphertext with given k which is a tuple (d, r)
+// where d is the depth of the cipher and r is the number of times the algorithm should repeat itself
+func Decode(s string, k []int) string {
+	if len(k) != 2 {
+		return ""
+	}
+	d := k[0]
+	r := k[1]
+
+	var pt string
+	for i := 0; i < r; i++ {
+		pt = DecodeOnce(s, d)
+		s = pt
+	}
+
+	return pt
+}
+
+// DecodeOnce decrypts ciphertext with given k and returns plaintext
+// @s: ciphered string
+// @n: how many rails we will use
+func DecodeOnce(s string, n int) string {
 	ss := []rune(s)
 
 	l := len(ss)
