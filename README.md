@@ -106,7 +106,7 @@ into a makefile.
 > make down # clean rail container and release resources
 ```
 
-Here's an example for run cipher command in the container:
+Here's an example for running cipher command in the container:
 
 ```bash
 # by make up, we build, run a container, and jump into it
