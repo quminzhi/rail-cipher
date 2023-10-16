@@ -1,3 +1,3 @@
-module github.com/nikonor/rail
+module github.com/quminzhi/rail
 
-go 1.19
+go 1.21.0
