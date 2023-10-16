@@ -101,8 +101,54 @@ into a makefile.
 
 ```bash
 > make up   # build an image and run rail container
-> make test # run test
+> make test # run test for packages
+> make run  # jump into container and run cipher command
 > make down # clean rail container and release resources
+```
+
+Here's an example for run cipher command in the container:
+
+```bash
+# by make up, we build, run a container, and jump into it
+> make up
+root@97f6fca7915f:/workspace#
+root@29c040e9c001:/workspace# ./cipher -help
+Usage of ./cipher:
+  -depth int
+     depth of rail fence encryption (default 2)
+  -help
+     display usage information
+  -message string
+     input message (default "hello world")
+  -option string
+     encryption or decryption (default "encryption")
+  -repeat int
+     the number of times to repeat encryption or decryption (default 1)
+root@29c040e9c001:/workspace# 
+
+root@29c040e9c001:/workspace# ./cipher -option encryption -message "hello world" -depth 3 -repeat 2
+Ciphertext: hlloe lwrod
+root@29c040e9c001:/workspace# ./cipher -option decryption -message "hlloe lwrod" -depth 3 -repeat 2
+Plaintext: hello world
+
+# test rail package
+root@29c040e9c001:/workspace# cd rail/
+root@29c040e9c001:/workspace/rail# ls
+go.mod rail.go  rail_test.go
+root@29c040e9c001:/workspace/rail# go test -v .
+=== RUN   TestEncode
+--- PASS: TestEncode (0.00s)
+=== RUN   TestDecode
+--- PASS: TestDecode (0.00s)
+PASS
+ok   github.com/quminzhi/rail 0.004s
+root@29c040e9c001:/workspace/rail# <ctrl-d>
+
+# close the container and release resources
+> make down
+rail
+rail
+Container rail ended.
 ```
 
 We have 4 tests as shown in `rail_test.go`,

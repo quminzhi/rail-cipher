@@ -5,9 +5,9 @@ MAINTAINER mqu@nyit.edu
 
 WORKDIR /workspace
 
-COPY ./rail.go ./rail.go
-COPY ./go.mod ./go.mod
-COPY ./rail_test.go ./rail_test.go
+COPY ./main ./main
+COPY ./rail ./rail
+RUN cd ./main && go build -o ../cipher .
 
 # Add a running foreground process
 CMD ["/usr/bin/tail", "-f", "/etc/default/useradd"]
